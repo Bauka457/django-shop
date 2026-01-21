@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Интернет-магазин</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 30px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.promo {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.promo h2 {
+    margin-bottom: 10px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.price {
+    color: #0a7cff;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.reviews {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.review {
+    background: #f1f1f1;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.rating {
+    color: #ff9800;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Интернет-магазин</h1>
+
+<!-- АКЦИИ -->
+{% if promotions %}
+    {% for promo in promotions %}
+        <div class="promo">
+            <h2>{{ promo.title }}</h2>
+            <p>{{ promo.description }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- ТОВАРЫ -->
+<div class="products">
+{% for product in products %}
+    <div class="card">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <div class="price">{{ product.price }} ₸</div>
+
+        <!-- ОТЗЫВЫ -->
+        <div class="reviews">
+            <strong>Отзывы:</strong>
+            {% for review in product.review_set.all %}
+                <div class="review">
+                    <b>{{ review.author }}</b>:
+                    {{ review.text }}
+                    <span class="rating">★ {{ review.rating }}/5</span>
+                </div>
+            {% empty %}
+                <p>Отзывов пока нет</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+</body>
+</html>
